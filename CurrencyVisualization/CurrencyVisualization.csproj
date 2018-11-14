@@ -62,7 +62,6 @@
     <Compile Include="ICurrencyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SymbolsList.cs" />
     <Compile Include="DailyRates.cs" />
     <EmbeddedResource Include="ChartForm.resx">
       <DependentUpon>ChartForm.cs</DependentUpon>

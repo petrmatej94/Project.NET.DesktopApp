@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DailyRates.cs" />
+    <Compile Include="DownloadErrorException.cs" />
     <Compile Include="ICurrencyInfo.cs" />
     <Compile Include="MyXmlParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

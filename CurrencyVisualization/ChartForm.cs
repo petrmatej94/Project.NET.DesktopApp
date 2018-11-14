@@ -13,7 +13,8 @@ namespace CurrencyVisualization
     public partial class ChartForm : Form
     {
         private Dictionary<string, List<DailyRates>> data;
-        
+        delegate void ArgReturningVoidDelegate();
+
 
         public ChartForm()
         {
@@ -23,27 +24,45 @@ namespace CurrencyVisualization
 
         public void MyRefresh()
         {
-            PrepareChart();
-
-            if(data == null)
+            if (this.chart.InvokeRequired)
             {
+                ArgReturningVoidDelegate d = new ArgReturningVoidDelegate(MyRefresh);
+                this.Invoke(d);
+            }
+            else
+            {
+                PrepareChart();
+                
                 data = Program.allSymbols;
+                
+
+                int top = 10;
+                int left = 150;
+
+                lock(this)
+                {
+                    try
+                    {
+                        foreach (var item in data)
+                        {
+                            Button button = new Button();
+                            button.Left = left;
+                            button.Top = top;
+                            button.Text = item.Key;
+                            button.Click += (sender, e) => myButtonClickFunction(sender, e, item.Key);
+
+                            this.Controls.Add(button);
+                            left += button.Width + 5;
+                        }
+                    }
+                    catch
+                    {
+                        MyRefresh();
+                    }
+                }
+
             }
 
-            int top = 10;
-            int left = 150;
-
-            foreach(var item in data)
-            {
-                Button button = new Button();
-                button.Left = left;
-                button.Top = top;
-                button.Text = item.Key;
-                button.Click += (sender, e) => myButtonClickFunction(sender, e, item.Key);
-
-                this.Controls.Add(button);
-                left += button.Width + 5;
-            }
         }
 
         void myButtonClickFunction(object sender, EventArgs e, string symbol)
