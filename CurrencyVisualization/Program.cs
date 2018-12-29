@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -17,14 +18,17 @@ namespace CurrencyVisualization
         [STAThread]
         static void Main()
         {
+            Debug.WriteLine("Program started");
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             allSymbols = new Dictionary<string, List<DailyRates>>();
             chart = new ChartForm();
 
             //Loads files that are already in folder with libs
+            Debug.WriteLine("Loading DLLs from folder...");
             LoadExistingDLLs();
-            
+
             //Start watcher to check changes in directory
             FileSystemWatcher watcher = new FileSystemWatcher();
             watcher.Path = @".\libs\";
@@ -35,7 +39,8 @@ namespace CurrencyVisualization
             watcher.Renamed += Watcher_Renamed;
             watcher.Deleted += Watcher_Deleted;
             watcher.EnableRaisingEvents = true;
-            
+
+            Debug.WriteLine("Running app");
             Application.Run(chart);
             Console.ReadKey();
         }
@@ -44,7 +49,9 @@ namespace CurrencyVisualization
         private static void Watcher_Deleted(object sender, FileSystemEventArgs e)
         {
             string name = e.Name.Substring(0, e.Name.LastIndexOf("."));
-            if(allSymbols.ContainsKey(name))
+            Debug.WriteLine(name + " was deleted");
+
+            if (allSymbols.ContainsKey(name))
             {
                 allSymbols.Remove(name);
                 chart.MyRefresh();
@@ -56,6 +63,8 @@ namespace CurrencyVisualization
         {
             string name = e.Name.Substring(0, e.Name.LastIndexOf("."));
             string oldName = e.OldName.Substring(0, e.OldName.LastIndexOf("."));
+
+            Debug.WriteLine(oldName + " was renamed to " + name);
 
             if (allSymbols.ContainsKey(oldName))
             {
@@ -73,6 +82,8 @@ namespace CurrencyVisualization
         private static void Watcher_Created(object sender, FileSystemEventArgs e)
         {
             string name = e.Name.Substring(0, e.Name.LastIndexOf("."));
+            Debug.WriteLine(name + " was created");
+
             if (!allSymbols.ContainsKey(name))
             {
                 new Thread(a => LoadDLL(e.FullPath)).Start();
@@ -101,7 +112,7 @@ namespace CurrencyVisualization
         {
             FileInfo fi = new FileInfo(fileName);
 
-            Console.WriteLine("Currently loading ... : " + fi.Name);
+            Debug.WriteLine("Currently loading ... : " + fi.Name);
             Assembly newAssembly = Assembly.LoadFile(fi.FullName);
 
             List<DailyRates> dailyRatesList = new List<DailyRates>();
@@ -194,7 +205,7 @@ namespace CurrencyVisualization
                 allSymbols.Add(symbolName, dailyRatesList);
             }
             chart.MyRefresh();
-            Console.WriteLine("Loading finished ... : " + fi.Name);
+            Debug.WriteLine("Loading of DLL finished ... : " + fi.Name);
         }
 
 

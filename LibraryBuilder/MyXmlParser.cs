@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -32,6 +33,8 @@ namespace TestLibrary
 
         public MyXmlParser()
         {
+            Trace.WriteLine("Library builder started. Processing " + fromSymbol.ToUpper() + toSymbol.ToUpper());
+
             url = String.Format("https://www.alphavantage.co/query?function=FX_DAILY&from_symbol={0}&to_symbol={1}&apikey={2}", fromSymbol, toSymbol, apiKey);
             dailyPrices = new List<DailyRates>();
 
@@ -79,6 +82,8 @@ namespace TestLibrary
 
         private string DownloadXml()
         {
+            Trace.WriteLine("Downloading JSON file");
+
             string json = null;
             using (WebClient wc = new WebClient())
             {
@@ -97,6 +102,8 @@ namespace TestLibrary
                 Thread.Sleep(5000);
                 throw new DownloadErrorException("Limit 5 API calls per minute, please wait");
             }
+
+            Trace.Assert(json != null, "Successfuly downloaded JSON");
             return json;
         }
 
@@ -110,12 +117,13 @@ namespace TestLibrary
             }
             catch(DownloadErrorException ex)
             {
-                Console.WriteLine(ex + ". Repeating process\n");
+                Trace.WriteLine(ex + ". Repeating process\n");
                 SaveXmlFriendlyDoc();
                 return;
             }
 
 
+            Trace.WriteLine("Converting JSON to XML");
             //Remove wrong syntax of JSON - numbers at start of nodes etc...
             for (int i = 1; i <= 6; i++)
             {
@@ -132,7 +140,7 @@ namespace TestLibrary
 
             if (doc == null)
             {
-                Console.WriteLine("XML failed to load... retrying " + fromSymbol + toSymbol);
+                Trace.WriteLine("XML failed to load... retrying " + fromSymbol + toSymbol);
                 SaveXmlFriendlyDoc();
                 return;
             }
@@ -143,11 +151,13 @@ namespace TestLibrary
             this.symbolName = from.InnerText + to.InnerText;
 
             doc.Save("./data/" + symbolName + ".xml");
+            Trace.WriteLine("XML File saved");
         }
 
 
         public void ParseMyXmlDoc(string fileName)
         {
+            Trace.WriteLine("Reading data from XML");
             XmlDocument doc = new XmlDocument();
             doc.Load("./data/" + fileName + ".xml");
             
@@ -183,6 +193,7 @@ namespace TestLibrary
                 SaveXmlFriendlyDoc();
                 ParseMyXmlDoc(symbolName);
             }
+            Trace.WriteLine("Reading finished, data loaded successfuly");
         }
     }
 }
