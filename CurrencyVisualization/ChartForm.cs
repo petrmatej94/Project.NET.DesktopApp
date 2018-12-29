@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ namespace CurrencyVisualization
 
         public ChartForm()
         {
+            Debug.WriteLine("Chart Initialized");
             InitializeComponent();
             MyRefresh();
         }
@@ -91,6 +93,7 @@ namespace CurrencyVisualization
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+            Debug.WriteLine("Refresh clicked");
             MyRefresh();
             PrepareChart();
         }

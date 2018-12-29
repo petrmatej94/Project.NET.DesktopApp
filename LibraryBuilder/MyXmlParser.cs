@@ -33,6 +33,7 @@ namespace TestLibrary
 
         public MyXmlParser()
         {
+            Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
             Trace.WriteLine("Library builder started. Processing " + fromSymbol.ToUpper() + toSymbol.ToUpper());
 
             url = String.Format("https://www.alphavantage.co/query?function=FX_DAILY&from_symbol={0}&to_symbol={1}&apikey={2}", fromSymbol, toSymbol, apiKey);

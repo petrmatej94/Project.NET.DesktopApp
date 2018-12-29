@@ -18,6 +18,7 @@ namespace CurrencyVisualization
         [STAThread]
         static void Main()
         {
+            Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
             Debug.WriteLine("Program started");
 
             Application.EnableVisualStyles();
