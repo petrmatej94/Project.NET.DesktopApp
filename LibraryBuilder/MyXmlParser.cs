@@ -33,7 +33,7 @@ namespace TestLibrary
 
         public MyXmlParser()
         {
-            Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+            //Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
             Trace.WriteLine("Library builder started. Processing " + fromSymbol.ToUpper() + toSymbol.ToUpper());
 
             url = String.Format("https://www.alphavantage.co/query?function=FX_DAILY&from_symbol={0}&to_symbol={1}&apikey={2}", fromSymbol, toSymbol, apiKey);
@@ -93,13 +93,13 @@ namespace TestLibrary
 
             if (json.Contains("Error"))
             {
-                Console.WriteLine("Download failed, repeating " + fromSymbol + toSymbol);
+                Trace.WriteLine("Download failed, repeating " + fromSymbol + toSymbol);
                 throw new DownloadErrorException("Error while downloading file");
             }
 
             if (json.Contains("Note"))
             {
-                Console.WriteLine("Download failed, repeating " + fromSymbol + toSymbol);
+                Trace.WriteLine("Download failed, repeating " + fromSymbol + toSymbol);
                 Thread.Sleep(5000);
                 throw new DownloadErrorException("Limit 5 API calls per minute, please wait");
             }
@@ -167,7 +167,8 @@ namespace TestLibrary
             
             foreach (XmlNode dateNode in TimeSeriesNode)
             {
-                DateTime date = DateTime.Parse(dateNode.Name.Replace("D", ""));
+                string newDate = dateNode.Name.Replace("_x0032_", "2").Replace("D", "");
+                DateTime date = DateTime.Parse(newDate);
                 Double open = Double.Parse(dateNode.SelectSingleNode("open").InnerText);
                 Double high = Double.Parse(dateNode.SelectSingleNode("high").InnerText);
                 Double low = Double.Parse(dateNode.SelectSingleNode("low").InnerText);
