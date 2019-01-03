@@ -1,0 +1,8 @@
+C:\Users\PMate\OneDrive\Plocha\Škola\5. Semestr\git\CurrencyVisualization\TestLibrary\bin\Debug\TestLibrary.dll
+C:\Users\PMate\OneDrive\Plocha\Škola\5. Semestr\git\CurrencyVisualization\TestLibrary\bin\Debug\TestLibrary.pdb
+C:\Users\PMate\OneDrive\Plocha\Škola\5. Semestr\git\CurrencyVisualization\TestLibrary\obj\Debug\TestLibrary.csproj.CoreCompileInputs.cache
+C:\Users\PMate\OneDrive\Plocha\Škola\5. Semestr\git\CurrencyVisualization\TestLibrary\obj\Debug\TestLibrary.dll
+C:\Users\PMate\OneDrive\Plocha\Škola\5. Semestr\git\CurrencyVisualization\TestLibrary\obj\Debug\TestLibrary.pdb
+C:\Users\PMate\OneDrive\Plocha\Škola\5. Semestr\git\CurrencyVisualization\TestLibrary\bin\Debug\Newtonsoft.Json.dll
+C:\Users\PMate\OneDrive\Plocha\Škola\5. Semestr\git\CurrencyVisualization\TestLibrary\bin\Debug\Newtonsoft.Json.xml
+C:\Users\PMate\OneDrive\Plocha\Škola\5. Semestr\git\CurrencyVisualization\TestLibrary\obj\Debug\TestLibrary.csproj.CopyComplete
